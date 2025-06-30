@@ -74,8 +74,7 @@ UB-Clean-Dash/
 ## Related Links
 
 - [UB Air Quality Study (Project Overview)](https://ubairqualitystudy.github.io/EPA-Website/index.html)
-- [Issues & Bug Reports](https://github.com/YONGHUNI/UB-Clean-Dash/issues)
-- [Source Code](https://github.com/YONGHUNI/UB-Clean-Dash)
+- [Repository for Data handling](https://github.com/YONGHUNI/rougue_PA_detector)
 
 ## License
 
