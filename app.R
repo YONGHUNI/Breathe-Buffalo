@@ -28,9 +28,12 @@ ui <- shinydashboard::dashboardPage(
         title = "UB Air Monitoring"
     ),
     shinydashboard::dashboardSidebar(disable = TRUE),
-    # custom css for the theme
+    
     dashboardBody(
         tags$head(
+            # favicon https://stackoverflow.com/questions/30096187/favicon-in-shiny
+            tags$link(rel="shortcut icon", href="favicon.ico"),
+            # custom css for the theme
             tags$style(HTML("
         /* Steel blue (#3c8dbc) */
         
