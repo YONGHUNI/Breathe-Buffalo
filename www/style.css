@@ -1,0 +1,28 @@
+/* Footer styles */
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%; /* Ensure the footer spans the entire width */
+  background-color: #f8f9fa;
+  padding: 5px; /* Adjust padding for a cleaner look */
+  display: flex; /* Use flexbox for alignment */
+  justify-content: space-between; /* Spread items across the footer */
+  align-items: center; /* Vertically center the content */
+  font-family: "Roboto", "Open Sans", Arial, sans-serif; /* Set the font family */
+  font-size: 25px; /* Adjust font size as needed */
+  /*font-weight: 500; /* Add medium weight for a clean appearance */
+  font-weight: bold;
+  color: #555; /* Set text color */
+  border-top: 1px solid #ddd;
+  z-index: 999; /* Ensure the footer stays on top */
+}
+
+/* Footer styles */
+.footer img {
+  height: 40px; /* Limit the image height */
+  background: none; /* Remove any background color */
+  border: none; /* Remove any borders, if present */
+  margin-right: 10px; /* Add spacing between text and image */
+}
+

@@ -1,0 +1,6 @@
+~/.boxr-oauth
+.Renviron
+.Rhistory
+
+data/secret/
+rsconnect/
