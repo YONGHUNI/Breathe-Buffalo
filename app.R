@@ -25,12 +25,29 @@ if (file.exists(".Renviron")) {
 # some front-end design
 ui <- shinydashboard::dashboardPage(
     dashboardHeader(
-        title = "UB Air Monitoring"
+        title = "UB Air Monitoring",
+        # Dropdown menu for notifications
+        dropdownMenu(type = "notifications", icon = icon("list"),
+                     headerText = "",
+                     notificationItem(icon = icon("leaf"),
+                                      status = "success", "  About",
+                                      href = "https://ubairqualitystudy.github.io/EPA-Website/index.html"
+                     ),
+                     notificationItem(icon = icon("square-github"), status = "primary",
+                                      "  Source Code",href = "https://github.com/YONGHUNI/UB-Clean-Dash"
+                     ),
+                     notificationItem(icon = icon("bug-slash"), status = "danger",
+                                      "  Report a Bug", href = "https://github.com/YONGHUNI/UB-Clean-Dash/issues"
+                     )
+        )
     ),
+    # Don't need a sidebar at the moment
     shinydashboard::dashboardSidebar(disable = TRUE),
     
     dashboardBody(
         tags$head(
+            # globally set target="_blank" when href
+            tags$base(target="_blank"),
             # favicon https://stackoverflow.com/questions/30096187/favicon-in-shiny
             tags$link(rel="shortcut icon", href="favicon.ico"),
             # custom css for the theme
@@ -173,11 +190,15 @@ addLegendCustom <- function(map, theme, position = "bottomright") {
         opacity = 1,
         position = position
     )
+    
 }
 
 
 # server-side
 server <- function(input, output, session) {
+    
+    #removeUI(selector = "span.label.label-primary")
+    removeUI(selector = "li[role='presentation']")
     
     # function for PM calibration
     calibrate_pm25 <- function(pm25atm,rh){
@@ -189,13 +210,14 @@ server <- function(input, output, session) {
         
     }
     
+    
     # spinner for every init
     show_modal_spinner(
         spin = "cube-grid",
         color = "firebrick",
         text = "Initializing... Please wait..."
     )
-    
+
     
     # 1) read spatial data (US zip)
     target <- st_read("data/zip/target.gpkg", quiet = TRUE)
