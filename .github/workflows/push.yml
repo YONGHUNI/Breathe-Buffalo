@@ -2,10 +2,10 @@ on:
   push:
     branches: main
     paths-ignore:
-      -'**/README.md'
-      -'LICENSE'
-      -'.gitignore'
-      -'.github/workflows/push.yml'
+      - '**/README.md'
+      - 'LICENSE'
+      - '.gitignore'
+      - '.github/workflows/push.yml'
 name: Push Shiny Dashboard to Shinyapps.io
 
 jobs:
