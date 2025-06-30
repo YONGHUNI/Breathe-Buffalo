@@ -3,4 +3,5 @@
 .Rhistory
 
 data/secret/
+renv/profiles/UBCleanDash/renv/library/*
 rsconnect/
