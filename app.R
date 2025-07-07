@@ -25,7 +25,8 @@ if (file.exists(".Renviron")) {
 # some front-end design
 ui <- shinydashboard::dashboardPage(
     dashboardHeader(
-        title = "UB Air Monitoring",
+        title =  "Breathe Buffalo: UB Air Quality Monitoring",
+        titleWidth = "100%",
         # Dropdown menu for notifications
         dropdownMenu(type = "notifications", icon = icon("list"),
                      headerText = "",
@@ -42,7 +43,7 @@ ui <- shinydashboard::dashboardPage(
         )
     ),
     # Don't need a sidebar at the moment
-    shinydashboard::dashboardSidebar(disable = TRUE),
+    shinydashboard::dashboardSidebar(disable = TRUE, width = 0),
     
     dashboardBody(
         tags$head(
@@ -52,6 +53,18 @@ ui <- shinydashboard::dashboardPage(
             tags$link(rel="shortcut icon", href="favicon.ico"),
             # custom css for the theme
             tags$style(HTML("
+            
+         .main-header .logo {
+            font-size: 20px;
+            font-weight: bold;
+            white-space: normal !important;
+            word-break: break-word;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            width: 100%;
+        }
         /* Steel blue (#3c8dbc) */
         
         /* 1) Header/Logo/Top Navigation Bar */
@@ -82,7 +95,7 @@ ui <- shinydashboard::dashboardPage(
                 
                 # Map for AQ
                 box(
-                    title = "Location Map", 
+                    title = "Spatial Distribution of Daily Air Quality", 
                     status = "primary", 
                     solidHeader = TRUE, 
                     width = NULL,
@@ -104,11 +117,11 @@ ui <- shinydashboard::dashboardPage(
                         tabPanel("PM2.5 Levels",
                                  fluidRow(
                                      column(6,
-                                            tags$div("Selected Zipcode Avg.", style = "text-align: center; font-weight: bold;"),
+                                            tags$div("Daily Average: Selected ZIP Code", style = "text-align: center; font-weight: bold;"),
                                             gaugeOutput("pm25_gauge", height = "120px")
                                      ),
                                      column(6,
-                                            tags$div("City-wide Avg.", style = "text-align: center; font-weight: bold;"),
+                                            tags$div("Daily Average: City-wide", style = "text-align: center; font-weight: bold;"),
                                             gaugeOutput("pm25_avg_gauge", height = "120px")
                                      )
                                  ),
@@ -147,7 +160,7 @@ ui <- shinydashboard::dashboardPage(
                     column(
                         width = 8,
                         box(
-                            title = "Each day’s average — last 7 days", 
+                            title = "Past 7-Day Air Quality Summary", 
                             status = "primary", 
                             solidHeader = TRUE,
                             width = NULL,
@@ -450,14 +463,14 @@ server <- function(input, output, session) {
     
     output$controls_box <- renderUI({
         box(
-            title = "Controls", 
+            title = "Your Selection", 
             status = "primary", 
             solidHeader = TRUE,
             width = NULL,
             height = "calc(100vh - 485px)",
             
             dateInput("end_time_inp", 
-                      label = "Average from the day before:",
+                      label = "Choose a Date to View Air Quality",
                       format = "MM-dd-yyyy",
                       max = end_time,
                       value = end_time
@@ -465,7 +478,7 @@ server <- function(input, output, session) {
             
             radioButtons(
                 inputId = "color_theme",
-                label = "Map Theme:",
+                label = "Type of Air Pollutant",
                 choices = c("PM2.5" = "pm2.5_atm", "VOC" = "voc"),
                 selected = "pm2.5_atm",
                 inline = T
