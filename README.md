@@ -78,8 +78,11 @@ Breathe-Buffalo/
 └── README.md           # Project documentation (this file)
 ```
 
-Note:\
-- Some files such as `.Renviron` are referenced in the code but not committed to version control. - The `renv/` folder may contain additional files (lock, settings, cached packages) created by the R package management system. - Additional files or folders may exist for logs, temporary files, or user-generated content if applicable.
+### Note:
+- Some files such as `.Renviron` are referenced in the code but not committed to version control.
+- The `renv/` folder may contain additional files (lock, settings, cached packages) created by the R package management system.
+- Additional files or folders may exist for logs, temporary files, or user-generated content if applicable.
+
 
 ## Related Links
 
