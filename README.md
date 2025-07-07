@@ -62,7 +62,7 @@ or run `app.R` directly.
 ## Project Structure
 
 ```         
-Breathe Buffalo/
+Breathe-Buffalo/
 ├── app.R               # Main Shiny application code
 ├── config.R            # Deployment (rsconnect) configuration script
 ├── renv/               # R package dependency management (renv)
