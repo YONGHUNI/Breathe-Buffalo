@@ -47,6 +47,17 @@ ui <- shinydashboard::dashboardPage(
     
     dashboardBody(
         tags$head(
+            # calculate width of browser
+            tags$script(HTML("
+                              $(document).on('shiny:connected', function(e) {
+                                Shiny.setInputValue('browser_width', window.innerWidth);
+                              });
+                        
+                              $(window).resize(function(e) {
+                                Shiny.setInputValue('browser_width', window.innerWidth);
+                              });
+                            ")
+                        ),
             # globally set target="_blank" when href
             tags$base(target="_blank"),
             # favicon https://stackoverflow.com/questions/30096187/favicon-in-shiny
@@ -100,7 +111,18 @@ ui <- shinydashboard::dashboardPage(
                     solidHeader = TRUE, 
                     width = NULL,
                     #height = "calc(100vh-0px)",
-                    leafletOutput("map", height = "calc(100vh - 200px)")
+                    style = "position: relative; padding: 0;",
+
+                    #leafletOutput("map", height = "calc(100vh - 200px)"),
+                    uiOutput("map_ui"),
+                    absolutePanel(            id = "overlay_controls", class = "panel panel-default",
+                                              top = 5,   # relative to the map box
+                                              right  = 10,
+                                              width  = 230,
+                                              draggable = TRUE,
+                                              style  = "z-index: 1000; max-height:118px;",
+                                              uiOutput("controls_box")
+                    )
                 )
             ),
             # right column: guage & lower sections (Controls + bar plot)
@@ -113,58 +135,37 @@ ui <- shinydashboard::dashboardPage(
                     status = "primary", 
                     solidHeader = TRUE,
                     width = NULL,
-                    tabsetPanel(
-                        tabPanel("PM2.5 Levels",
-                                 fluidRow(
-                                     column(6,
-                                            tags$div("Daily Average: Selected ZIP Code", style = "text-align: center; font-weight: bold;"),
-                                            gaugeOutput("pm25_gauge", height = "120px")
-                                     ),
-                                     column(6,
-                                            tags$div("Daily Average: City-wide", style = "text-align: center; font-weight: bold;"),
-                                            gaugeOutput("pm25_avg_gauge", height = "120px")
-                                     )
-                                 ),
-                                 # PM2.5 Color Ramp
-                                 plotOutput("pm25_color_ramp", height = "50px"),
-                                 # Color Ramp Help Messages
-                                 tags$p("Color Ramp: indicates air quality levels from 'Good' (Green) to 'Hazardous' (Red).",
-                                        style = "text-align:center; font-size:14px; margin-top:5px; font-weight:bold;")
+                    fluidRow(
+                        column(6,
+                               tags$div("Daily Average: Selected ZIP Code", style = "text-align: center; font-weight: bold;"),
+                               gaugeOutput("pollutant_gauge", height = "120px")
                         ),
-                        tabPanel("VOC Levels",
-                                 fluidRow(
-                                     column(6,
-                                            tags$div("Selected Zipcode Avg.", style = "text-align: center; font-weight: bold;"),
-                                            gaugeOutput("voc_gauge", height = "120px")
-                                     ),
-                                     column(6,
-                                            tags$div("City-wide Avg.", style = "text-align: center; font-weight: bold;"),
-                                            gaugeOutput("voc_avg_gauge", height = "120px")
-                                     )
-                                 ),
-                                 # VOC Color Ramp
-                                 plotOutput("voc_color_ramp", height = "50px"),
-                                 # Color Ramp Help Message
-                                 tags$p("Color Ramp: indicates air quality levels from 'Good' (Green) to 'Hazardous' (Red).",
-                                        style = "text-align:center; font-size:14px; margin-top:5px; font-weight:bold;")
+                        column(6,
+                               tags$div("Daily Average: City-wide", style = "text-align: center; font-weight: bold;"),
+                               gaugeOutput("pollutant_avg_gauge", height = "120px")
                         )
-                    )
+                    ),
+                    # PM2.5 Color Ramp
+                    plotOutput("pollutant_color_ramp", height = "50px"),
+                    # Color Ramp Help Messages
+                    tags$p("Color Ramp: indicates air quality levels from 'Good' (Green) to 'Hazardous' (Red).",
+                           style = "text-align:center; font-size:14px; margin-top:5px; font-weight:bold;")
                 ),
                 
                 # Arrange the controls next to the bar plot
                 fluidRow(
+                    # column(
+                    #     width = 4,
+                    #     uiOutput("controls_box")
+                    # ),
                     column(
-                        width = 4,
-                        uiOutput("controls_box")
-                    ),
-                    column(
-                        width = 8,
+                        width = 12,
                         box(
                             title = "Past 7-Day Air Quality Summary", 
                             status = "primary", 
                             solidHeader = TRUE,
                             width = NULL,
-                            plotlyOutput("bar_plot",height = "calc(100vh - 547px)")
+                            plotlyOutput("bar_plot",height = "calc(100vh - 507px)")
                         )
                     )
                 )
@@ -348,6 +349,24 @@ server <- function(input, output, session) {
         ta <- target_attr()
         val_vec <- ta[[input$color_theme]]
         
+        # 0. map extent for both mobile & desktop support
+        w <- input$browser_width
+        
+        fitBounds_adapt <- function(map,x){
+            
+            if (x < 768) {
+                
+                fitBounds(map, -78.75, 42.80, -78.67, 43.00)
+                
+            } else {
+                
+                fitBounds(map, -78.93, 42.80, -78.77, 43.00)
+                
+            }
+            
+        }
+        
+        
         # 1. Define a custom color function
         get_custom_pal <- function(theme) {
             function(x) {
@@ -367,6 +386,11 @@ server <- function(input, output, session) {
         # then call it
         my_pal <- get_custom_pal(input$color_theme)
         
+
+        
+
+        
+        
         # 2. build lefleat layers
         leaflet(ta) %>%
             addTiles() %>%
@@ -381,7 +405,8 @@ server <- function(input, output, session) {
                     "PM2.5:", ifelse(is.na(pm2.5_atm), "No data", round(pm2.5_atm, 1)), " µg/m³<br>",
                     "VOC:", ifelse(is.na(voc), "No data", round(voc, 1)), " ppb"
                 )
-            ) %>%
+            )  %>%
+            fitBounds_adapt(w) %>%
             # 3. add custom legend
             addLegendCustom(
                 theme = input$color_theme,
@@ -399,62 +424,94 @@ server <- function(input, output, session) {
         }
     })
     
-    # 7) render PM2.5 gauge (0-12: green, 12-55.4: yellow, >55.4: red)
-    output$pm25_gauge <- renderGauge({
+    output$map_ui <- renderUI({
+        
+        # get width from browser
+        w <- input$browser_width
+
+
+        # exception for handling null width
+        if (is.null(w) || w == 0) w <- 767
+        
+        # calculate map height
+        h <- round(w * 0.65)
+        
+        # for debugging
+        #print(paste0(w,", ",h, "px"))
+        
+        if (w<768) {
+            # for the mobile support
+            leafletOutput("map", width = "100%", height = paste0(h, "px"))
+            
+        } else {
+            
+            leafletOutput("map", width = "100%", height = "calc(100vh - 180px)")
+        }
+        
+    })
+    
+
+    # 7) render gauge & color ramp
+    output$pollutant_gauge <- renderGauge({
+        req(input$color_theme)
         region_id <- selected_region()
         sel <- zipgroup()[zipcode %in% region_id]
-        val <- if (nrow(sel) > 0) sel$pm2.5_atm else "NaN"
-        gauge(val, min = 0, max = 100, symbol = " µg/m³",
-              gaugeSectors(success = c(0, 12), warning = c(12, 55.4), danger = c(55.4, 100)))
+        
+        
+        if (input$color_theme == "pm2.5_atm") {
+            if (nrow(sel) == 0) return(gauge("NaN", symbol = " µg/m³", min = 0, max = 100))
+            
+            val <- sel$pm2.5_atm
+            gauge(val, min = 0, max = 100, symbol = " µg/m³",
+                  gaugeSectors(success = c(0, 12), warning = c(12, 55.4), danger = c(55.4, 100)))
+        } else {
+            if (nrow(sel) == 0) return(gauge("NaN", symbol = " ppb", min = 0, max = 1000))
+            
+            val <- sel$voc
+            gauge(val, min = 0, max = 1000, symbol = " ppb",
+                  gaugeSectors(success = c(0, 300), warning = c(300, 500), danger = c(500, 1000)))
+        }
     })
     
-    ## city-wide avg
-    output$pm25_avg_gauge <- renderGauge({
+    
+    output$pollutant_avg_gauge <- renderGauge({
+        req(input$color_theme)
         fd <- filtered_data()
-        val <- if(nrow(fd) > 0) mean(fd$pm2.5_atm, na.rm = TRUE) else "NaN"
-        gauge(val, min = 0, max = 100, symbol = " µg/m³",
-              gaugeSectors(success = c(0, 12), warning = c(12, 55.4), danger = c(55.4, 100)))
+        
+        if (input$color_theme == "pm2.5_atm") {
+            if (nrow(fd) == 0) return(gauge("NaN", symbol = " µg/m³", min = 0, max = 100))
+            
+            val <- mean(fd$pm2.5_atm, na.rm = TRUE)
+            gauge(val, min = 0, max = 100, symbol = " µg/m³",
+                  gaugeSectors(success = c(0, 12), warning = c(12, 55.4), danger = c(55.4, 100)))
+        } else {
+            if (nrow(fd) == 0) return(gauge("NaN", symbol = " ppb", min = 0, max = 1000))
+            
+            val <- mean(fd$voc, na.rm = TRUE)
+            gauge(val, min = 0, max = 1000, symbol = " ppb",
+                  gaugeSectors(success = c(0, 300), warning = c(300, 500), danger = c(500, 1000)))
+        }
     })
     
-    # 8) render VOC gauge (0-300: green, 300-500: yellow, >500: red)
-    output$voc_gauge <- renderGauge({
-        region_id <- selected_region()
-        sel <- zipgroup()[zipcode %in% region_id]
-        val <- if (nrow(sel) > 0) sel$voc else "NaN"
-        gauge(val, min = 0, max = 1000, symbol = " ppb",
-              gaugeSectors(success = c(0, 300), warning = c(300, 500), danger = c(500, 1000)))
-    })
-    
-    ## city-wide avg
-    output$voc_avg_gauge <- renderGauge({
-        fd <- filtered_data()
-        val <- if(nrow(fd) > 0) mean(fd$voc, na.rm = TRUE) else "NaN"
-        gauge(val, min = 0, max = 1000, symbol = " ppb",
-              gaugeSectors(success = c(0, 300), warning = c(300, 500), danger = c(500, 1000)))
-    })
-    
-    # 9) render PM2.5 Color Ramp
-    output$pm25_color_ramp <- renderPlot({
+    output$pollutant_color_ramp <- renderPlot({
+        req(input$color_theme)
         par(mar = c(2, 1, 1, 1))
         plot.new()
-        plot.window(xlim = c(0, 100), ylim = c(0, 1))
-        rect(0,     0, 12,   1, col = "#73C557", border = NA)  # green
-        rect(12,    0, 55.4, 1, col = "#FA9857", border = NA)  # yellow
-        rect(55.4,  0, 100,  1, col = "#FA4662", border = NA)  # red
-        axis(1, at = c(0, 12, 55.4, 100), labels = c("0", "12", "55.4", "100"), cex.axis = 0.8)
+        
+        if (input$color_theme == "pm2.5_atm") {
+            plot.window(xlim = c(0, 100), ylim = c(0, 1))
+            rect(0, 0, 12, 1, col = "#73C557", border = NA)
+            rect(12, 0, 55.4, 1, col = "#FA9857", border = NA)
+            rect(55.4, 0, 100, 1, col = "#FA4662", border = NA)
+            axis(1, at = c(0, 12, 55.4, 100), labels = c("0", "12", "55.4", "100"), cex.axis = 0.8)
+        } else {
+            plot.window(xlim = c(0, 1000), ylim = c(0, 1))
+            rect(0, 0, 300, 1, col = "#73C557", border = NA)
+            rect(300, 0, 500, 1, col = "#FA9857", border = NA)
+            rect(500, 0, 1000, 1, col = "#FA4662", border = NA)
+            axis(1, at = c(0, 300, 500, 1000), labels = c("0", "300", "500", "1000"), cex.axis = 0.8)
+        }
     })
-    
-    # 10) render VOC Color Ramp
-    output$voc_color_ramp <- renderPlot({
-        par(mar = c(2, 1, 1, 1))
-        plot.new()
-        plot.window(xlim = c(0, 1000), ylim = c(0, 1))
-        rect(0,   0, 300, 1, col = "#73C557", border = NA)  # green
-        rect(300, 0, 500, 1, col = "#FA9857", border = NA)  # yellow
-        rect(500, 0, 1000,1, col = "#FA4662", border = NA)   # red
-        axis(1, at = c(0, 300, 500, 1000), labels = c("0", "300", "500", "1000"), cex.axis = 0.8)
-    })
-    
 
     # 11) add control-box backend
     
@@ -463,11 +520,11 @@ server <- function(input, output, session) {
     
     output$controls_box <- renderUI({
         box(
-            title = "Your Selection", 
+            #title = "Your Selection", 
             status = "primary", 
             solidHeader = TRUE,
             width = NULL,
-            height = "calc(100vh - 485px)",
+            height = "133px",
             
             dateInput("end_time_inp", 
                       label = "Choose a Date to View Air Quality",
