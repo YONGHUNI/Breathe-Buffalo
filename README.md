@@ -1,6 +1,6 @@
-# UB-Clean-Dash
+# Breathe Buffalo
 
-**UB-Clean-Dash** is a dashboard-style web application developed for the UB Air Monitoring project. This dashboard is a key dissemination product for the community-based participatory research (CBPR) study focused on air quality in Buffalo’s African-American community, particularly on the east side of Buffalo, New York.
+**Breathe Buffalo** is a dashboard-style web application developed for the UB Air Monitoring project. This dashboard is a key dissemination product for the community-based participatory research (CBPR) study focused on air quality in Buffalo’s African-American community, particularly on the east side of Buffalo, New York.
 
 ## Project Background
 
@@ -62,7 +62,7 @@ or run `app.R` directly.
 ## Project Structure
 
 ```         
-UB-Clean-Dash/
+Breathe-Buffalo/
 ├── app.R               # Main Shiny application code
 ├── config.R            # Deployment (rsconnect) configuration script
 ├── renv/               # R package dependency management (renv)
@@ -78,8 +78,11 @@ UB-Clean-Dash/
 └── README.md           # Project documentation (this file)
 ```
 
-Note:\
-- Some files such as `.Renviron` are referenced in the code but not committed to version control. - The `renv/` folder may contain additional files (lock, settings, cached packages) created by the R package management system. - Additional files or folders may exist for logs, temporary files, or user-generated content if applicable.
+### Note:
+- Some files such as `.Renviron` are referenced in the code but not committed to version control.
+- The `renv/` folder may contain additional files (lock, settings, cached packages) created by the R package management system.
+- Additional files or folders may exist for logs, temporary files, or user-generated content if applicable.
+
 
 ## Related Links
 
