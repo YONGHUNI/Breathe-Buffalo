@@ -234,7 +234,7 @@ server <- function(input, output, session) {
 
     
     # 1) read spatial data (US zip)
-    target <- st_read("data/zip/target.gpkg", quiet = TRUE)
+    target <- st_read("data/zip/zipcode11.shp", quiet = TRUE)
     # mutation for the join
     target$ZCTA5CE10 <- as.character(target$ZCTA5CE10)
     
