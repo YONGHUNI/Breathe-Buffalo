@@ -291,7 +291,10 @@ server <- function(input, output, session) {
                     )
                 , by = .(sensor_index, `Date_Time(ET)`)][
             ,c("sensor_index","pm2.5_atm"):=list(as.numeric(sensor_index),calibrate_pm25(`pm2.5_atm`,humidity))]|>
-        _[participants, on = c(sensor_index = "sensor index")]
+        _[participants, on = c(sensor_index = "sensor index")][
+        # handling faulty value
+        , pm2.5_atm := pmin(pm2.5_atm, 150)]
+            
     
     
  
