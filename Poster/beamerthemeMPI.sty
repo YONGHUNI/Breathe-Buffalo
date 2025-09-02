@@ -1,0 +1,232 @@
+% this style was created by Horea Christian and is basted on the ETH Zürich corporate design color palette https://www.ethz.ch/services/en/service/communication/corporate-design/colour.html
+\ProvidesPackage{beamerthemeMPI}
+\usepackage{graphicx}
+\newcommand{\vcenteredinclude}[1]{\begingroup
+\setbox0=\hbox{\includegraphics[width=.8\textwidth, height=.06\paperheight, keepaspectratio]{#1}}%
+\parbox{\wd0}{\box0}\endgroup}
+
+
+\usepackage{calc}
+\newlength{\mylength}
+
+\mode<presentation>
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\definecolor{MPI1}{RGB}{198,211,36}
+\definecolor{MPI2}{RGB}{0,85,85}
+\definecolor{MPI3}{RGB}{80,80,80}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\definecolor{ETH1}{RGB}{31,64,122}
+\definecolor{ETH3}{RGB}{0,105,180}
+\definecolor{ETH6}{RGB}{111,111,110}
+\definecolor{ETH8}{RGB}{0,122,146}
+\definecolor{ETH10}{RGB}{130,190,30}
+\definecolor{tlg}{RGB}{230,230,230}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand\crule[3][MPI1]{\textcolor{#1}{\rule{#2}{#3}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%It seems many of the following entries do not control any visible Behaviour. All such entries are
+%set to red, so that they are easy to spot if they ever become visible
+
+\setbeamercolor{headline}{fg=red,bg=white} % This is the recommended color for Specialist community usage: change to ETH1 for general communication
+\setbeamercolor{footline}{fg=red, bg=red}
+\setbeamerfont{footline}{size=\large,series=\bf}
+\setbeamercolor{separation line}{bg=white} % separation line 
+\setbeamercolor{title in headline}{fg=MPI2}
+\setbeamercolor{author in headline}{fg=MPI3}
+\setbeamercolor{institute in headline}{fg=MPI3}
+
+\setbeamercolor{framesubtitle}{fg=red, bg=ta2gray}
+\setbeamercolor{author in head/foot}{fg=white, bg=MPI1}
+\setbeamercolor{title in head/foot}{fg=red, bg=red}
+
+\setbeamercolor*{normal text}{fg=ETH6, bg=white}
+\setbeamercolor*{block body}{fg=black, bg=white}
+\setbeamerfont{block body}{size=\footnotesize} %\footnotesize
+\setbeamercolor*{block title}{fg=MPI2,bg=white}
+\setbeamerfont{block title}{size=\large,series=\bf}
+\setbeamercolor{upper separation line head}{fg=red}
+
+\setbeamercolor*{example body}{fg=red,bg=red}
+\setbeamercolor*{example text}{fg=red,bg=red}
+\setbeamercolor*{example title}{bg=red,fg=red}
+
+\setbeamercolor{alerted text}{fg=red}
+\setbeamercolor{structure}{fg=ETH1}
+
+\setbeamertemplate{itemize items}{\color{ETH10}$\blacktriangleright$}
+\setbeamertemplate{navigation symbols}{}  % no navigation on a poster
+
+\newenvironment<>{myblock}[1]{%
+  \begin{actionenv}#2%
+  \def\insertblocktitle{\centering#1}%
+  \par%
+  \usebeamertemplate{block begin}\leftskip=0pt\rightskip=14pt\vspace{10pt}}
+  {\par\vspace{1em}\usebeamertemplate{block end}
+  \end{actionenv}}
+
+\newenvironment<>{myblock1c}[1]{%
+  \begin{actionenv}#2%
+  \def\insertblocktitle{\centering#1}%
+  \par%
+  \usebeamertemplate{block1c begin}\leftskip=0pt\rightskip=14pt\vspace{10pt}}
+  {\par\vspace{1em}\usebeamertemplate{block1c end}
+  \end{actionenv}}
+
+\newenvironment<>{myblock2c}[1]{%
+  \begin{actionenv}#2%
+  \def\insertblocktitle{\centering#1}%
+  \par%
+  \usebeamertemplate{block2c begin}\leftskip=0pt\rightskip=14pt\vspace{10pt}}
+  {\par\vspace{1em}\usebeamertemplate{block2c end}
+  \end{actionenv}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% !!! This environment can't both have nice margins AND display the contained text as justified:
+% We preferentially use the above but keep this one just-in-case
+\setbeamertemplate{block begin}{
+  \usebeamercolor{block title}{\raggedright\color{fg}\small\textbf{\insertblocktitle -- heu}}\\
+  \includegraphics[width=\textwidth, height=.5em]{logos/bar2c.png}
+  \setlength{\mylength}{\textwidth+2ex}%
+  \vskip2ex
+%  \begin{beamercolorbox}[ht=2.8ex,dp=2ex, wd=\mylength, center,rounded=false,shadow=false,leftskip=1cm,colsep*=0ex]{block title}%
+%    \usebeamerfont*{block title}\centering \insertblocktitle
+%  \end{beamercolorbox}\vskip-9pt%
+  {\ifbeamercolorempty[bg]{block body}{}{\nointerlineskip\vskip-0.5ex}}%
+  \usebeamerfont{block body}%
+  \begin{beamercolorbox}[rounded=false,shadow=false,center,wd=\textwidth,]{block body}%
+    \ifbeamercolorempty[bg]{block body}\vbox{}%
+    \begin{minipage}{0.96\textwidth}\vbox{}%
+    \justify
+    }
+\setbeamertemplate{block end}{
+  \end{minipage}
+  \end{beamercolorbox}
+  }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setbeamertemplate{block1c begin}{
+  \usebeamercolor{block title}{\color{fg}\small\textbf{\insertblocktitle}}\\
+  \includegraphics[width=\textwidth, height=.5em]{logos/bar1c.png}
+  \setlength{\mylength}{\textwidth+2ex}%
+  \vskip2ex
+  {\ifbeamercolorempty[bg]{block body}{}{\nointerlineskip\vskip-0.5ex}}%
+  \usebeamerfont{block body}%
+  \begin{beamercolorbox}[rounded=false,shadow=false,center,wd=\textwidth,]{block body}%
+    \ifbeamercolorempty[bg]{block body}\vbox{}%
+    \begin{minipage}{0.96\textwidth}\vbox{}%
+    \justify
+    }
+\setbeamertemplate{block1c end}{
+  \end{minipage}
+  \end{beamercolorbox}
+  }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setbeamertemplate{block2c begin}{
+  \usebeamercolor{block title}{\color{fg}\small\textbf{\insertblocktitle}}\\
+  \includegraphics[width=\textwidth, height=.5em]{logos/bar2c.png}
+  \setlength{\mylength}{\textwidth+2ex}%
+  \vskip2ex
+  {\ifbeamercolorempty[bg]{block body}{}{\nointerlineskip\vskip-0.5ex}}%
+  \usebeamerfont{block body}%
+  \begin{beamercolorbox}[rounded=false,shadow=false,center,wd=\textwidth,]{block body}%
+    \ifbeamercolorempty[bg]{block body}\vbox{}%
+    \begin{minipage}{0.96\textwidth}\vbox{}%
+    \justify
+    }
+\setbeamertemplate{block2c end}{
+  \end{minipage}
+  \end{beamercolorbox}
+  }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \usepackage[absolute,overlay]{textpos}
+
+\setbeamertemplate{headline}{ 
+ 
+ \begin{beamercolorbox}[ht=0.01683\paperheight,leftskip=.5cm,rightskip=.5cm]{author in head/foot}%
+   %\href{http://www.aic-fmi.ethz.ch}{www.aic-fmi.ethz.ch}
+   % \today
+    \small{\textbf{\color{black}P07-09}}
+   %\href{mailto:my_address@wikibooks.org}{ioanas@biomed.ee.ethz.ch}
+   \vskip.7ex
+ \end{beamercolorbox}
+\leavevmode
+  \begin{beamercolorbox}[wd=\paperwidth]{headline}
+    \vspace{2ex}\\
+    \begin{columns}[c]
+      \begin{column}{.04\paperwidth}
+      \end{column}
+      \begin{column}{.15\paperwidth}
+      %\small{\color{black} P07-09}
+      \includegraphics[width=\textwidth, keepaspectratio]{logos/UB_Stacked.png}
+      \end{column}
+      \begin{column}{.02\paperwidth}
+      \end{column}
+      \begin{column}{.8\paperwidth}
+        \raggedright
+        \usebeamercolor{title in headline}{\color{fg}\textbf{\LARGE{\inserttitle}}\\[1ex]}
+        \vspace{1em}
+        \usebeamercolor{author in headline}{\color{fg}\footnotesize{\insertauthor}\\[1ex]}
+        \usebeamercolor{institute in headline}{\color{fg}\footnotesize{\insertinstitute}\\[1ex]}
+      \end{column}
+      % \begin{column}[t]{.15\paperwidth}
+      % \includegraphics[width=\textwidth, keepaspectratio]{logos/US_EPA_Logo.png}
+      % \end{column}
+      %\begin{column}[t]{.30\paperwidth}
+      %  \raggedright
+      %  \includegraphics[width=\textwidth, keepaspectratio]{logos/Logo_english.png}
+      %  \vspace{1em}
+        %\includegraphics[width=.6\textwidth, keepaspectratio]{logos/de.png}
+      %\end{column}
+      \begin{column}{.04\paperwidth}
+      \hfill
+      \end{column}
+    \end{columns}
+    \vspace{2ex}\\
+  \end{beamercolorbox}
+
+   \begin{beamercolorbox}[wd=\paperwidth]{lower separation line head}
+    \rule{0pt}{2pt}
+  \end{beamercolorbox}
+  \vskip-2cm
+  }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setbeamertemplate{footline}{
+  % \crule{\textwidth}{0.01683\paperheight}
+%  \begin{beamercolorbox}[wd=\paperwidth]{upper separation line foot}
+%    \rule{0pt}{2pt}
+%  \end{beamercolorbox}
+%  \leavevmode%
+ \begin{beamercolorbox}[ht=3ex,leftskip=.5cm,rightskip=.5cm]{author in head/foot}%
+   %\href{http://www.aic-fmi.ethz.ch}{www.aic-fmi.ethz.ch}
+   \hfill
+   % \today
+   \footnotesize \color{darkgray}Funding: Supported by the Environmental Protection Agency under Grant No. 96216123
+   \hfill
+   %\href{mailto:my_address@wikibooks.org}{ioanas@biomed.ee.ethz.ch}
+   \vskip1ex
+ \end{beamercolorbox}
+  \vskip0pt%
+  % \begin{beamercolorbox}[wd=\paperwidth]{lower separation line foot}
+  %   \rule{0pt}{2pt}
+  % \end{beamercolorbox}
+  }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Display a grid to help align images ... and it looks nice with this color scheme
+% \beamertemplategridbackground[1cm]
+
+%Some beamer customizations:
+\setbeamertemplate{bibliography item}[text]
+\setbeamertemplate{caption}[numbered]{}% Number float-like environments
+
+\mode<all>
