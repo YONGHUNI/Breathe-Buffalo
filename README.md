@@ -1,6 +1,6 @@
 # Breathe Buffalo [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/YONGHUNI/Breathe-Buffalo)
 
-
+![Dashboard](./Poster/diagrams/Dashboard.png)
 
 **Breathe Buffalo** is a dashboard-style web application developed for the UB Air Monitoring project. This dashboard is a key dissemination product for the community-based participatory research (CBPR) study focused on air quality in Buffalo’s African-American community, particularly on the east side of Buffalo, New York.
 
@@ -11,6 +11,8 @@ The east side of Buffalo’s African-American community faces a disproportionate
 The dashboard serves as a central tool to communicate findings from a ten-month community air monitoring campaign. Future dissemination efforts will also include public education events and virtual meetings to share results with the broader community.
 
 ## Key Features
+
+![Architecture Overview](./Poster/diagrams/BB_diagram.drawio_DB.png)
 
 -   **Real-time Air Quality Monitoring:** Visualize sensor data (PM2.5, VOC, etc.) on an interactive map using Leaflet.
 -   **Zipcode-based Measurements:** View air quality metrics by zipcode, with gauges and bar charts for selected regions.
