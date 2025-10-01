@@ -6,7 +6,7 @@
 
 ## Project Background
 
-The east side of Buffalo’s African-American community faces a disproportionate burden of chronic disease compared to neighboring regions. Poor air quality is a well-known contributor to adverse health outcomes, but until recently, it has been difficult to assess community-specific air pollution exposures due to a lack of local monitoring. To address this gap, we partnered with the Buffalo Center for Health Equity (BCHE), a local environmental justice organization, and launched a two-year air monitoring initiative using CBPR principles. t Prototypes of study results were developed to report fine particulate matter (PM2.5) and volatile organic compound (VOC) levels. An interactive data dashboard—this very application—was iteratively co-designed and refined with input from BCHE members and study participants through virtual meetings and online surveys. This process emphasized the use of color, large font for key results, and a preference for maps over traditional plots, ensuring that the dashboard is accessible, engaging, and tailored to community needs.
+The east side of Buffalo’s African-American community faces a disproportionate burden of chronic disease compared to neighboring regions. Poor air quality is a well-known contributor to adverse health outcomes, but until recently, it has been difficult to assess community-specific air pollution exposures due to a lack of local monitoring. To address this gap, we partnered with the Buffalo Center for Health Equity (BCHE), a local environmental justice organization, and launched a two-year air monitoring initiative using CBPR principles. Prototypes of study results were developed to report fine particulate matter (PM2.5) and volatile organic compound (VOC) levels. An interactive data dashboard—this very application—was iteratively co-designed and refined with input from BCHE members and study participants through virtual meetings and online surveys. This process emphasized the use of color, large font for key results, and a preference for maps over traditional plots, ensuring that the dashboard is accessible, engaging, and tailored to community needs.
 
 The dashboard serves as a central tool to communicate findings from a ten-month community air monitoring campaign. Future dissemination efforts will also include public education events and virtual meetings to share results with the broader community.
 
@@ -23,7 +23,7 @@ The dashboard serves as a central tool to communicate findings from a ten-month 
 ## Main Screens
 
 -   **Location Map:** Real-time air quality by region, visualized on a map.
--   **Air Quality Gauges:** Gauges showing both selected zipcode and city-wide air quality.
+-   **Air Quality Gauges:** Gauges showing both the selected zipcode and city-wide air quality.
 -   **Color Ramp:** Visual color ramp indicating air quality levels (`Good` in green to `Hazardous` in red).
 
 ## Getting Started
@@ -74,16 +74,14 @@ Breathe-Buffalo/
 │   └── ...             # Other renv infrastructure files
 ├── renv.R              # renv bootstrap/init script
 ├── data/               # Project data assets
-│   └── zip/
-│       ├── target.gpkg     # Geopackage: spatial boundary/target data
-│       └── zipBnd_EN.qmd   # QGIS metadata or spatial config
+│   └── zip/target.gpkg     # Geopackage: spatial boundary/target data
 ├── .Renviron           # (Not committed: for local secrets/env vars)
 ├── LICENSE             # License file
 └── README.md           # Project documentation (this file)
 ```
 
 ### Note:
-- Some files such as `.Renviron` are referenced in the code but not committed to version control.
+- Some files, such as `.Renviron` are referenced in the code but not committed to version control.
 - The `renv/` folder may contain additional files (lock, settings, cached packages) created by the R package management system.
 - Additional files or folders may exist for logs, temporary files, or user-generated content if applicable.
 
