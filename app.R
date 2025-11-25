@@ -256,11 +256,24 @@ server <- function(input, output, session) {
     # read cached database
     database <- fread("./data/base_PA.csv")
     
+    
+    query <- "
+  SELECT sensor_index, MIN(time_stamp) AS latest
+  FROM \"Purple_Air\"
+  GROUP BY sensor_index"
+    
+    
+    
     # find new data from the remote DB
-    end_time <- database[,max(time_stamp),by = sensor_index]
+    internal <- database[, .(latest = max(time_stamp)), by = sensor_index]
+    external <- dbGetQuery(con, query) |> as.data.table() |> _[,sensor_index := as.numeric(sensor_index)]
+    
+    end_time <- rbind(internal, external[!internal, on = "sensor_index"] )
+    
+    
     latest_conditions <- paste0(
         "(sensor_index = '", end_time$sensor_index,
-        "' AND time_stamp > ", end_time$V1, ")"
+        "' AND time_stamp > ", end_time$latest, ")"
     )
     
     
