@@ -14,6 +14,8 @@ library(DBI)
 library(RPostgres)
 library(plotly)
 library(ggplot2)
+library(googledrive)
+library(readxl)
 
 
 # read secret
@@ -239,11 +241,40 @@ server <- function(input, output, session) {
     target$ZCTA5CE10 <- as.character(target$ZCTA5CE10)
     
     ## read participants' sensitive info from the env file
-    participants <- Sys.getenv("PARTICIPANTS") |>
-        base64enc::base64decode() |>
-        rawToChar() |>
-        jsonlite::fromJSON() |>
-        as.data.table()
+    # participants <- Sys.getenv("PARTICIPANTS") |>
+    #     base64enc::base64decode() |>
+    #     rawToChar() |>
+    #     jsonlite::fromJSON() |>
+    #     as.data.table()
+    
+    read_sensor_list <- function() {
+        
+        Sys.getenv("G_SHEET_KEY") |>
+            base64decode() |>
+            rawToChar() -> decoded_json
+        
+
+        drive_auth(path = decoded_json) 
+        
+        temp_file <- tempfile(fileext = ".xlsx")
+        
+       
+        drive_download(
+            file = "https://docs.google.com/spreadsheets/d/1EgazNxjCNRtIx077Nt7NCVSUycktYGCW/edit?usp=sharing&ouid=107155354318382804011&rtpof=true&sd=true",
+            path = temp_file,
+            overwrite = TRUE
+        )
+        
+        df <- read_excel(temp_file)
+
+        unlink(temp_file)
+        
+        return(df)
+        
+    }
+    
+    
+    participants <- as.data.table(read_sensor_list()) |> _[, `service status` := NULL]
     
     ## Make the connection from the DB
     con <- DBI::dbConnect(RPostgres::Postgres(), dbname = Sys.getenv("DB_NAME"),
