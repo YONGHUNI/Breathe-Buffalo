@@ -25,7 +25,7 @@ jobs:
             libharfbuzz-dev libfribidi-dev
             libudunits2-dev libgdal-dev
             libpq-dev libgeos-dev
-            libproj-dev
+            libproj-dev libssl-dev libxml2-dev
           version: 1
       - name: Install R
         uses: r-lib/actions/setup-r@v2
