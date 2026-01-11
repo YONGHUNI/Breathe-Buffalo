@@ -42,5 +42,5 @@ jobs:
           echo "${{ secrets.ENV_FILE}}" | base64 -d > .Renviron
 
       - name: run the config file for the push
-        run: Rscript --verbose ./config.R
+        run: Rscript --no-init-file --verbose ./config.R
       
