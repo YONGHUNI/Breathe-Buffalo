@@ -1,11 +1,9 @@
-library(rsconnect)
 library(shiny)
 library(shinydashboard)
 library(shinybusy)
 library(flexdashboard) 
 library(lubridate)
 library(leaflet)
-#library(DT)
 library(sf)
 library(data.table)
 library(base64enc)
@@ -14,16 +12,17 @@ library(DBI)
 library(RPostgres)
 library(plotly)
 library(ggplot2)
-library(googlesheets4)
+library(googledrive)
+library(readxl)
 
 # setwd("C:/Users/dydgn/OneDrive/Prof_Yoo/23_dashboard(UBcleanair)")
-#renv::init(profile = "UBCleanDash")
+# renv::init(profile = "UBCleanDash")
 
 
 # renv::activate()
 # renv::status()
 # renv::snapshot()
 # renv::deactivate(clean = F)
-#renv::deactivate(clean = T)
+# renv::deactivate(clean = T)
 
 

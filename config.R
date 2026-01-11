@@ -2,8 +2,6 @@
 #  APP_NAME: ${{ secrets.APP_NAME }}
 #run: Rscript --verbose ./config.R
 
-options(repos = c(CRAN = "https://cloud.r-project.org"))
-
 
 if (file.exists(".Renviron")) {
     
@@ -12,21 +10,13 @@ if (file.exists(".Renviron")) {
 }
 
 
-if(require("rsconnect",quietly = T)) {
+if(!require("rsconnect",quietly = T)) install.packages("rsconnect")
     
-    rsconnect::setAccountInfo(name=Sys.getenv("ACNT_NAME"), 
-                              token=Sys.getenv("ACNT_TOKEN"),
-                              secret=Sys.getenv("ACNT_SECRET"))
-    
-    
-}else{
-    
-    install.packages("rsconnect")
-    rsconnect::setAccountInfo(name=Sys.getenv("ACNT_NAME"), 
-                              token=Sys.getenv("ACNT_TOKEN"),
-                              secret=Sys.getenv("ACNT_SECRET"))
-    
-}
+rsconnect::setAccountInfo(name=Sys.getenv("ACNT_NAME"), 
+                          token=Sys.getenv("ACNT_TOKEN"),
+                          secret=Sys.getenv("ACNT_SECRET"))
+cat("Account info set.\n")
+
 
 rsconnect::deployApp(appDir = getwd(),appName = "UBCleanDash",
                      forceUpdate = TRUE)
