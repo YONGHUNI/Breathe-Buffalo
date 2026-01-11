@@ -8,22 +8,26 @@ if (file.exists(".Renviron")) {
     cat("Env file loaded.\n")
 }
 
+install.packages("rsconnect", type = "source")
 
-if(!require("rsconnect",quietly = T)) {
-    
-    install.packages("rsconnect")
-    rsconnect::setAccountInfo(name=Sys.getenv("ACNT_NAME"), 
-                              token=Sys.getenv("ACNT_TOKEN"),
-                              secret=Sys.getenv("ACNT_SECRET"))
-    
-    
-}else{
-    
-    install.packages("rsconnect")
-    rsconnect::setAccountInfo(name=Sys.getenv("ACNT_NAME"), 
-                              token=Sys.getenv("ACNT_TOKEN"),
-                              secret=Sys.getenv("ACNT_SECRET"))
-    
+library(rsconnect)
+
+
+rsconnect::setAccountInfo(name=Sys.getenv("ACNT_NAME"),token=Sys.getenv("ACNT_TOKEN"),secret=Sys.getenv("ACNT_SECRET"))
+
+# if(!require("rsconnect",quietly = T)) {
+#     
+#     rsconnect::setAccountInfo(name=Sys.getenv("ACNT_NAME"), 
+#                               token=Sys.getenv("ACNT_TOKEN"),
+#                               secret=Sys.getenv("ACNT_SECRET"))
+#     
+#     
+# }else{
+#     
+#     rsconnect::setAccountInfo(name=Sys.getenv("ACNT_NAME"), 
+#                               token=Sys.getenv("ACNT_TOKEN"),
+#                               secret=Sys.getenv("ACNT_SECRET"))
+#     
 }
 
 rsconnect::deployApp(appDir = getwd(),appName = "UBCleanDash",
