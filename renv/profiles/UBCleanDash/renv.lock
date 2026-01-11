@@ -4,6 +4,10 @@
     "Repositories": [
       {
         "Name": "CRAN",
+        "URL": "https://cloud.r-project.org"
+      },
+      {
+        "Name": "PPM",
         "URL": "https://packagemanager.posit.co/cran/latest"
       }
     ]
