@@ -11,7 +11,6 @@ if (file.exists(".Renviron")) {
 
 if(require("rsconnect",quietly = T)) {
     
-    install.packages("rsconnect")
     rsconnect::setAccountInfo(name=Sys.getenv("ACNT_NAME"), 
                               token=Sys.getenv("ACNT_TOKEN"),
                               secret=Sys.getenv("ACNT_SECRET"))
@@ -19,6 +18,7 @@ if(require("rsconnect",quietly = T)) {
     
 }else{
     
+    install.packages("rsconnect")
     rsconnect::setAccountInfo(name=Sys.getenv("ACNT_NAME"), 
                               token=Sys.getenv("ACNT_TOKEN"),
                               secret=Sys.getenv("ACNT_SECRET"))
