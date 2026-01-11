@@ -1,6 +1,7 @@
 ~/.boxr-oauth
 .Renviron
 .Rhistory
+.Rprofile
 
 data/secret/
 renv/profiles/UBCleanDash/renv/library/*
