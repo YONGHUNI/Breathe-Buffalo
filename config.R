@@ -28,7 +28,7 @@ rsconnect::setAccountInfo(name=Sys.getenv("ACNT_NAME"),token=Sys.getenv("ACNT_TO
 #                               token=Sys.getenv("ACNT_TOKEN"),
 #                               secret=Sys.getenv("ACNT_SECRET"))
 #     
-}
+#}
 
 rsconnect::deployApp(appDir = getwd(),appName = "UBCleanDash",
                      forceUpdate = TRUE)
