@@ -253,7 +253,7 @@ server <- function(input, output, session) {
             rawToChar() -> decoded_json
         
 
-        drive_auth(path = decoded_json) 
+        drive_auth(path = decoded_json)
         
         temp_file <- tempfile(fileext = ".xlsx")
         
@@ -273,7 +273,8 @@ server <- function(input, output, session) {
     }
     
     
-    participants <- as.data.table(read_sensor_list()) |> _[, `service status` := NULL]
+    participants <- as.data.table(read_sensor_list()) |> _[, `service status` := NULL][
+        order(-`start date`)][,head(.SD,1),by = .(`sensor index`)]
     
     ## Make the connection from the DB
     con <- DBI::dbConnect(RPostgres::Postgres(), dbname = Sys.getenv("DB_NAME"),
